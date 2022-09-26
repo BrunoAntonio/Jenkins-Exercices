@@ -1,1 +1,1 @@
-print("Hello Jenkins Exercices")
+print("Hello Jenkins")
