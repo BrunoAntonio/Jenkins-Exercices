@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+    
+   parameters{
+       string(name: 'name', defaultValue: "Bruno", description: 'My name')
+       choice(name: 'operation', choices: ['sum','mult'], description: 'Math operation')
+   }
+   
+    environment {
+    TIMESTAMP = getTimestamp()
+    OPERATION = "${params.operation}"
+   }
+   
+    stages {
+        stage('Time') {
+            steps {
+                echo "time: $TIMESTAMP"
+            }
+        }
+        stage('Math'){
+            steps{
+                script{
+                    if (OPERATION == 'sum') {
+                        sum = sum(1,1)
+                        echo "Sum: $sum"
+                    } else {
+                        mult = mult(2,2)
+                        echo "Mult: $mult"
+                    }
+                }
+            }
+        }
+        stage('Name'){
+            steps{
+                script{
+                    name = "${params.name}"
+                    echo "Name: $name"
+                }
+            }
+        }
+    }
+}
+
+def getTimestamp() {
+    def now = new Date()
+    return now.format("yyyyMMddHHmmssSSS", TimeZone.getTimeZone('UTC'))
+}
+
+def sum(a, b){
+    return a+b
+}
+
+def mult(a, b){
+    return a*b
+}

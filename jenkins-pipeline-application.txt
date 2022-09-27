@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/BrunoAntonio/Jenkins-Exercices.git']]])
+                echo 'Checkout Complete'
+            }
+        }
+        stage('Build'){
+            steps{
+                git branch: 'main', url: 'https://github.com/BrunoAntonio/Jenkins-Exercices.git'
+                bat 'python list_app.py'
+                echo 'Build Complete'
+            }
+        }
+        stage('Test'){
+            steps{
+                bat 'pytest -v test_list_app.py'
+                echo 'Test complete'
+            }
+        }
+        stage('Deployment'){
+            steps{
+                bat 'docker build -t pythonimage .'
+                echo 'Deployment complete'
+            }
+        }
+    }
+}
