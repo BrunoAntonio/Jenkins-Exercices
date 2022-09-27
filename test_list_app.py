@@ -4,7 +4,7 @@ import list_app
 
 def test_first_item():
     first_item = list_app.test_list[0]
-    assert first_item == 5
+    assert first_item == 3
 
 def test_last_item():
     last_item = list_app.test_list[4]
